@@ -1,0 +1,15 @@
+/* .timeline {
+  flex: 6;
+} */
+
+/* .timelineWrapper {
+  padding: 20px;
+} */
+
+.timeline {
+  margin: 0 auto;
+}
+.timelineWrapper {
+  width: 500px;
+}
+
