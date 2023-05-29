@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./Post.css";
 // import { MoreVert } from '@mui/icons-material';
-import { EditIcon } from '@mui/icons-material/Edit';
-import { DeleteIcon } from '@mui/icons-material/Delete';
+import { EditIcon, DeleteIcon } from '@mui/icons-material/Edit';
 import axios from "axios";
 
 export default function Post({ post }) {
@@ -112,6 +111,12 @@ export default function Post({ post }) {
           </div>
           <div className="postBottomRight">
             <span className="postCommentText">{post.comment}: comments</span>
+          </div>
+          <div className="commentSubmit" type="submit">
+            <form>
+              <input type="text" className="commentSubmitButton" placeholder="Comment"/>
+              <button className="commentSubmitButton" type="submit"></button>
+            </form>
           </div>
         </div>
       </div>

@@ -25,9 +25,9 @@ router.put("/:id", async (req, res) => {
       await post.updateOne({
         $set: req.body,
       });
-      return res.status(200).json("投稿編集に変更しました")
+      return res.status(200).json("Changed to post edit")
     } else {
-      return res.status(403).json("あなたは他の人の投稿を編集できません")
+      return res.status(403).json("You can't edit other people's posts")
     }
   } catch (err) {
     return res.status(403).json(err);
@@ -40,9 +40,9 @@ router.delete("/:id", async (req, res) => {
     const post = await Post.findById(req.params.id);
     if(post.userId === req.body.userId) {
       await post.deleteOne();
-      return res.status(200).json("投稿を削除しました")
+      return res.status(200).json("Post deleted")
     } else {
-      return res.status(403).json("あなたは他の人の投稿を削除できません")
+      return res.status(403).json("You can't delete other peoples posts")
     }
   } catch (err) {
     return res.status(403).json(err);
@@ -73,6 +73,17 @@ router.get("/timeline/:userId", async(req, res) => {
     // );
     // return res.status(200).json(userPosts.concat(...friendPosts)) 
     return res.status(200).json(userPosts) 
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+//Comments
+router.post("/comment", async (req, res) => {
+  const newComment = new Comment(req.body);
+  try {
+    const savedComment = await newComment.save();
+    return res.status(200).json(savedComment);
   } catch (err) {
     return res.status(500).json(err);
   }
