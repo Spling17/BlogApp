@@ -8,14 +8,20 @@ const User = require("../models/User")
 //registerd users
 router.post("/register", async(req,res) => {
   try {
-    const newUser = await new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-    });
+    const formData = req.body
+
+    const newUser = await new User(formData);
+
+    // const newUser = await new User({
+    //   username: req.body.username,
+    //   email: req.body.email,
+    //   password: req.body.password,
+    // });
 
     const user = await newUser.save();
     return res.status(200).json(user);
+
+    // return res.json(newUser)
 
   } catch (err){
     return res.status(500).json(err);
@@ -24,6 +30,7 @@ router.post("/register", async(req,res) => {
 
 //login
 router.post("/login", async(req, res) => {
+  console.log(req.body);
   try {
     const user = await User.findOne({ email: req.body.email })
     if (!user) return res.status(404).send("User NOT Found");

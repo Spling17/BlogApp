@@ -8,15 +8,15 @@ const User = require("../models/User");
 // })
 
 //Create
-// router.post("/", async (req, res) => {
-//   const newPost = new Post(req.body);
-//   try {
-//     const savedPost = await newPost.save();
-//     return res.status(200).json(savedPost);
-//   } catch (err) {
-//     return res.status(500).json(err);
-//   }
-// });
+router.post("/", async (req, res) => {
+  const newPost = new Post(req.body);
+  try {
+    const savedPost = await newPost.save();
+    return res.status(200).json(savedPost);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
 // router.post("/create", async (req, res) => {
 //   const newPost = new Post(req.body);
 //   try {
@@ -73,12 +73,15 @@ router.get("/:id", async (req, res) => {
 
 //GET Timeline
 router.get("/timeline/:userId", async(req, res) => {
+  console.log(req.params.userId)
+  const currentUser = req.params.userId
   try {
-    const currentUser = await User.findById(req.params.userId);
+    // const currentUser = await User.findById(req.params.userId);
     // const currentUser = await User.findById(req.body.userId);
-    const userPosts = await Post.find({ userId: currentUser._id });
+    const userPosts = await Post.find({ userId: currentUser });
+    console.log({userPosts})
     //自分がフォローしている友達の投稿内容を全て取得する
-    // const friendPosts = await Promose.all (
+    // const friendPosts = await Promise.all (
     //   currentUser.followings.map((friendId) => {
     //     return Post.find({ userId: friendId }); 
     //   })
