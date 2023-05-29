@@ -3,19 +3,29 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 // router.get("/", (req, res) => {
+//   console.log('first')
 //   res.send("posts router")
 // })
 
 //Create
-router.post("/", async (req, res) => {
-  const newPost = new Post(req.body);
-  try {
-    const savedPost = await newPost.save();
-    return res.status(200).json(savedPost);
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-});
+// router.post("/", async (req, res) => {
+//   const newPost = new Post(req.body);
+//   try {
+//     const savedPost = await newPost.save();
+//     return res.status(200).json(savedPost);
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// });
+// router.post("/create", async (req, res) => {
+//   const newPost = new Post(req.body);
+//   try {
+//     const savedPost = await newPost.save();
+//     return res.status(200).json(savedPost);
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// });
 
 //Update
 router.put("/:id", async (req, res) => {
@@ -35,7 +45,8 @@ router.put("/:id", async (req, res) => {
 });
 
 //Dalete
-router.delete("/:id", async (req, res) => {
+router.delete("/", async (req, res) => {
+// router.delete("/api/posts/timeline/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if(post.userId === req.body.userId) {
@@ -53,6 +64,7 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    
       return res.status(200).json(post)
   } catch (err) {
     return res.status(403).json(err);
@@ -79,15 +91,15 @@ router.get("/timeline/:userId", async(req, res) => {
 });
 
 //Comments
-router.post("/comment", async (req, res) => {
-  const newComment = new Comment(req.body);
-  try {
-    const savedComment = await newComment.save();
-    return res.status(200).json(savedComment);
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-});
+// router.post("/comment", async (req, res) => {
+//   const newComment = new Comment(req.body);
+//   try {
+//     const savedComment = await newComment.save();
+//     return res.status(200).json(savedComment);
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// });
 
 
 module.exports = router;

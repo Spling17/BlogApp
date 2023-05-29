@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors")
 const app = express();
 const userRoute = require("./routes/users")
 const authRoute = require("./routes/auth")
@@ -18,6 +19,7 @@ mongoose.connect(process.env.MONGOURL)
 
 //Middleware
 app.use(express.json());
+app.use(cors());
 app.use("/api/users", userRoute)
 app.use("/api/auth", authRoute)
 app.use("/api/posts", postRoute)
