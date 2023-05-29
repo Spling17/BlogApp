@@ -10,7 +10,7 @@ export default function TimeLine() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await axios.get("/api/posts/timeline/64726468d3010375cc942688")
+      const response = await axios.fetch("http/localhost:3000/api/posts/timeline/64726468d3010375cc942688")
       console.log(response.data);
     };
     fetchPosts();

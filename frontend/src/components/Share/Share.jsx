@@ -1,8 +1,8 @@
 import React from 'react'
 import "./Share.css"
 import { Image, Gif, Analytics, Face } from '@mui/icons-material';
-import { useContext, useRef } from "react";
-import { container } from 'webpack';
+import { useRef } from "react";
+// import { container } from 'webpack';
 import axios from 'axios';
 
 export default function Share() {
