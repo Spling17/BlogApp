@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import "./Post.css";
-import { MoreVert } from '@mui/icons-material';
+// import { MoreVert } from '@mui/icons-material';
+import { EditIcon } from '@mui/icons-material/Edit';
+import { DeleteIcon } from '@mui/icons-material/Delete';
 import axios from "axios";
 
 export default function Post({ post }) {
@@ -90,7 +92,8 @@ export default function Post({ post }) {
             <span className="postDate">{post.date}</span>
           </div>
           <div className="postTopRight">
-            <MoreVert />
+            <EditIcon />
+            <DeleteIcon />
           </div>
         </div>
         <div className="postCenter">
