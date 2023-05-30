@@ -30,11 +30,17 @@ router.post("/", async (req, res) => {
 //Update
 router.put("/:id", async (req, res) => {
   try {
+    
     const post = await Post.findById(req.params.id);
+    console.log(post.userId);
     if(post.userId === req.body.userId) {
-      await post.updateOne({
-        $set: req.body,
-      });
+      console.log(req.body);
+      // await post.updateOne({
+      //   $set: req.body.desk,
+      // });
+      post.desc = req.body.desc;
+      console.log(post);
+      await post.save();
       return res.status(200).json("Changed to post edit")
     } else {
       return res.status(403).json("You can't edit other people's posts")
@@ -49,9 +55,7 @@ router.delete("/:id", async (req, res) => {
 // router.delete("/api/posts/timeline/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    console.log(req.body)
     if(post.userId === req.body.userId) {
-      console.log('first')
       await post.deleteOne();
       return res.status(200).json("Post deleted")
     } else {

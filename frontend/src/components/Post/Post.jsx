@@ -1,87 +1,43 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import "./Post.css";
 // import { MoreVert } from '@mui/icons-material';
-import { EditIcon, DeleteIcon } from '@mui/icons-material/Edit';
+// import { EditIcon, DeleteIcon } from '@mui/icons-material/Edit';
 import axios from "axios";
+import postStore from '../../store/usePostStore';
 
 export default function Post({createdAt, desc, img, likes, userId, _id}) {
   // const [like, setLike] = useState(post.like);
   // const [isLiked, setIsLiked] = useState(false);
-  // const [user, setUser] = useState({});
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const response = await axios.get(`/users/${post.userId}`)
-  //     // setUser(response.data);
-  //   };
-  //   fetchUser();
-  // }, [])
-
-  // const fetchPosts = async () => {
-  //   try {
-  //     const response = await axios.get("/posts/timeline/64726468d3010375cc942688");
-  //     setPosts(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-//   const createPost = async (postData) => {
-//     try {
-//       const response = await axios.post("/posts/create", postData);
-//       const newPost = response.data;
-//       setPosts([...posts, newPost]);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-
-//   const editPost = async (postId, updatedData) => {
-//     try {
-//       await axios.put(`/posts/edit/${postId}`, updatedData);
-//       const updatedPosts = posts.map((post) =>
-//         post.id === postId ? { ...post, ...updatedData } : post
-//       );
-//       setPosts(updatedPosts);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-
-//   const deletePost = async (postId) => {
-//     try {
-//       await axios.delete(`/posts/delete/${postId}`);
-//       const updatedPosts = posts.filter((post) => post.id !== postId);
-//       setPosts(updatedPosts);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-
-//   return (
-//     <div className="timeline">
-//       <div className="timelineWrapper">
-//         <Share createPost={createPost} />
-//         {posts.map((post) => (
-//           <Post
-//             key={post.id}
-//             post={post}
-//             editPost={editPost}
-//             deletePost={deletePost}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-  const editPost = async () => {
+  const { getPosts } = postStore((state) => state)
+  const [edit, setEdit] = useState(false);
+  const descRef = useRef();
+  const fetchPosts = async () => {
+    const response = await    
+     axios.get(`http://localhost:3000/api/posts/timeline/${userId}`)
+    console.log(response.data);
+    return response.data
+  };
 
 
+  const editPost = async (e) => {
+    e.preventDefault();
+    const editData = {
+      userId,
+      desc: descRef.current.value
+      }
+    console.log(userId)
+    const res = await axios.put(`http://localhost:3000/api/posts/${_id}`, editData);
+    console.log({res})
+    const postsData = await fetchPosts()
+    getPosts(postsData);
+    setEdit(false);
   }
   const deletePost = async () => {
     console.log(userId)
-    const res = await axios.delete(axios.delete('http://localhost:3000/api/posts/${id}', {params: userId}));
-   console.log({res})
+    const res = await axios.delete(`http://localhost:3000/api/posts/${_id}`, { data: { userId }});
+    console.log({res})
+    const postsData = await fetchPosts()
+    getPosts(postsData);
   }
   const handleLike = () => {
     // setLike(isLiked ? like -1 : like + 1);
@@ -100,7 +56,17 @@ export default function Post({createdAt, desc, img, likes, userId, _id}) {
           <div className="postTopRight">
             {/* <EditIcon />
             <DeleteIcon /> */}
-            <button onClick={() => editPost()}>Edit</button>
+            <div>
+              {edit && (
+              <>
+              <form onSubmit={(e) => editPost(e)}>
+              <textarea ref={descRef} placeholder='' defaultValue={desc}></textarea>
+              <button className='bg-red-100'>Change</button>
+              </form>
+              </>
+              )}
+              </div>
+            <button onClick={() => setEdit((prev) => !prev)}>Edit</button>
             <button onClick={() => deletePost()}>Delete</button>
           </div>
         </div>
@@ -124,7 +90,7 @@ export default function Post({createdAt, desc, img, likes, userId, _id}) {
           <div className="commentSubmit" type="submit">
             <form>
               <input type="text" className="commentSubmitButton" placeholder="Comment"/>
-              <button className="commentSubmitButton" type="submit"></button>
+              {/* <button className="commentSubmitButton" type="submit"></button> */}
             </form>
           </div>
         </div>
