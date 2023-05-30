@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import "./Post.css";
 // import { MoreVert } from '@mui/icons-material';
 import { EditIcon, DeleteIcon } from '@mui/icons-material/Edit';
 import axios from "axios";
 
-export default function Post({ post }) {
-  const [like, setLike] = useState(post.like);
-  const [isLiked, setIsLiked] = useState(false);
-  const [user, setUser] = useState({});
+export default function Post({createdAt, desc, img, likes, userId, _id}) {
+  // const [like, setLike] = useState(post.like);
+  // const [isLiked, setIsLiked] = useState(false);
+  // const [user, setUser] = useState({});
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const response = await axios.get(`/users/${post.userId}`)
-      setUser(response.data);
-    };
-    fetchUser();
-  }, [])
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const response = await axios.get(`/users/${post.userId}`)
+  //     // setUser(response.data);
+  //   };
+  //   fetchUser();
+  // }, [])
 
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get("/posts/timeline/64726468d3010375cc942688");
-      setPosts(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const fetchPosts = async () => {
+  //   try {
+  //     const response = await axios.get("/posts/timeline/64726468d3010375cc942688");
+  //     setPosts(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
 //   const createPost = async (postData) => {
 //     try {
@@ -74,12 +74,19 @@ export default function Post({ post }) {
 //     </div>
 //   );
 // }
-  
+  const editPost = async () => {
 
+
+  }
+  const deletePost = async () => {
+    console.log(userId)
+    const res = await axios.delete(axios.delete('http://localhost:3000/api/posts/${id}', {params: userId}));
+   console.log({res})
+  }
   const handleLike = () => {
     // setLike(isLiked ? like -1 : like + 1);
-    setLike(like + 1);
-    setIsLiked(!isLiked);
+    // setLike(like + 1);
+    // setIsLiked(!isLiked);
   }
   return (
     <div className="post">
@@ -88,16 +95,18 @@ export default function Post({ post }) {
           <div className="postTopLeft">
             <img src="./assets/person/1.jpeg" alt="" className="postProofileImg" />
             <span className="postUsername">HARU</span>
-            <span className="postDate">{post.date}</span>
+            <span className="postDate">{createdAt}</span>
           </div>
           <div className="postTopRight">
-            <EditIcon />
-            <DeleteIcon />
+            {/* <EditIcon />
+            <DeleteIcon /> */}
+            <button onClick={() => editPost()}>Edit</button>
+            <button onClick={() => deletePost()}>Delete</button>
           </div>
         </div>
         <div className="postCenter">
-          <span className="postText">{post.desc}</span>
-          <img src={post.photo} alt="" className="postImg"/>
+          <span className="postText">{desc}</span>
+          <img src={img} alt="" className="postImg"/>
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
@@ -107,10 +116,10 @@ export default function Post({ post }) {
               className="likeIcon"
               onClick={() => handleLike()}
             />
-            <span className="postLikeCounter">{like} likes</span>
+            <span className="postLikeCounter">{likes.length} likes</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">{post.comment}: comments</span>
+            {/* <span className="postCommentText">{comment}: comments</span> */}
           </div>
           <div className="commentSubmit" type="submit">
             <form>

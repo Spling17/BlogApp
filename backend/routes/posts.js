@@ -45,11 +45,13 @@ router.put("/:id", async (req, res) => {
 });
 
 //Dalete
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
 // router.delete("/api/posts/timeline/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    console.log(req.body)
     if(post.userId === req.body.userId) {
+      console.log('first')
       await post.deleteOne();
       return res.status(200).json("Post deleted")
     } else {
@@ -73,13 +75,12 @@ router.get("/:id", async (req, res) => {
 
 //GET Timeline
 router.get("/timeline/:userId", async(req, res) => {
-  console.log(req.params.userId)
   const currentUser = req.params.userId
   try {
     // const currentUser = await User.findById(req.params.userId);
     // const currentUser = await User.findById(req.body.userId);
     const userPosts = await Post.find({ userId: currentUser });
-    console.log({userPosts})
+    // console.log({userPosts})
     //自分がフォローしている友達の投稿内容を全て取得する
     // const friendPosts = await Promise.all (
     //   currentUser.followings.map((friendId) => {
